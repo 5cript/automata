@@ -31,7 +31,8 @@
 *.out
 *.app
 
-*.cbp
 *.depend
 *.layout
 *build_log.html
+
+main.cpp

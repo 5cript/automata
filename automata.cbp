@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="automata" />
+		<Option pch_mode="2" />
+		<Option compiler="msys2_64" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/automata" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="msys2_64" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/automata" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="msys2_64" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="automata.cpp" />
+		<Unit filename="automata.hpp" />
+		<Unit filename="automata_fwd.hpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="state.cpp" />
+		<Unit filename="state.hpp" />
+		<Unit filename="transition.cpp" />
+		<Unit filename="transition.hpp" />
+		<Unit filename="trigger.cpp" />
+		<Unit filename="trigger.hpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
