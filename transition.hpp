@@ -23,6 +23,16 @@ namespace MiniAutomata
          */
         void perform() const;
 
+        /**
+         *  Returns the name of the state this transition points to.
+         */
+        std::string getTargetName() const;
+
+        /**
+         *  Returns the node position in the automaton.
+         */
+        std::size_t getTarget() const;
+
     private:
         Automaton* parent_;
         std::size_t to_;

@@ -11,7 +11,6 @@ namespace MiniAutomata
         , idMappings_{}
         , states_{}
         , currentState_{0}
-        , startState_{0}
         , transitions_{}
         , randGenerator_{static_cast <unsigned int> (std::chrono::system_clock::now().time_since_epoch().count())}
     {
@@ -58,6 +57,7 @@ namespace MiniAutomata
     void Automaton::setState(std::size_t num)
     {
         currentState_ = num;
+        states_[currentState_]();
     }
 //---------------------------------------------------------------------------------------------------------------------
     TransitionSet Automaton::getActiveTransitions()
@@ -102,28 +102,38 @@ namespace MiniAutomata
     Automaton::TransitionBegin operator>(Automaton& automat, std::string const& name)
     {
         auto num = automat.getMapped(name);
-        automat.startState_ = num;
         return {&automat, num};
     }
 //---------------------------------------------------------------------------------------------------------------------
     Automaton::TransitionBegin operator>(Automaton& automat, int id)
     {
         auto num = automat.getMapped(id);
-        automat.startState_ = num;
         return {&automat, num};
+    }
+//---------------------------------------------------------------------------------------------------------------------
+    void Automaton::tryEmplace(std::size_t from, std::size_t to, boost::optional <Trigger> const& trig)
+    {
+        // Do not add edges twice.
+        auto range = transitions_.equal_range(from);
+        for (auto i = range.first; i != range.second; ++i)
+            if (i->second.getTarget() == to)
+                return;
+
+        // add edge.
+        transitions_.emplace(from, Transition{this, to, trig});
     }
 //---------------------------------------------------------------------------------------------------------------------
     Automaton::TransitionBegin operator>(Automaton::TransitionBegin const& prior, std::string const& name)
     {
         auto to = prior.stem->getMapped(name);
-        prior.stem->transitions_.emplace(prior.from, Transition{prior.stem, to, prior.trig});
+        prior.stem->tryEmplace(prior.from, to, prior.trig);
         return Automaton::TransitionBegin{prior.stem, to};
     }
 //---------------------------------------------------------------------------------------------------------------------
     Automaton::TransitionBegin operator>(Automaton::TransitionBegin const& prior, int id)
     {
         auto to = prior.stem->getMapped(id);
-        prior.stem->transitions_.emplace(prior.from, Transition{prior.stem, to, prior.trig});
+        prior.stem->tryEmplace(prior.from, to, prior.trig);
         return Automaton::TransitionBegin{prior.stem, to};
     }
 //---------------------------------------------------------------------------------------------------------------------
@@ -133,15 +143,13 @@ namespace MiniAutomata
         {
             auto to = prior.stem->getMapped(identification);
             if (prior.trig)
-                prior.stem->transitions_.emplace(
+                prior.stem->tryEmplace(
                     prior.from,
-                    Transition{prior.stem, to, Trigger{[trig, ptrig=prior.trig.get()]() -> bool {return trig.test() && ptrig.test();}}}
+                    to,
+                    Trigger{[trig, ptrig=prior.trig.get()]() -> bool {return trig.test() && ptrig.test();}}
                 );
             else
-                prior.stem->transitions_.emplace(
-                    prior.from,
-                    Transition{prior.stem, to, trig}
-                );
+                prior.stem->tryEmplace(prior.from, to, trig);
         };
 
         for (auto const& i : binding)

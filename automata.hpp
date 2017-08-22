@@ -78,6 +78,14 @@ namespace MiniAutomata
         }
 
         /**
+         *  operator<< to insert states into the automata
+         */
+        Automaton& operator<<(const char* cstr)
+        {
+            return operator<<(ProtoState{cstr}());
+        }
+
+        /**
          *  operator[] to retrieve state elements by name.
          */
         State& operator[](std::string const& name);
@@ -147,6 +155,7 @@ namespace MiniAutomata
         bool advance(std::function <TransitionSet::const_iterator(TransitionSet const& set)> selector);
 
     private:
+        void tryEmplace(std::size_t from, std::size_t to, boost::optional <Trigger> const& trig);
         void insertMappings();
         void setState(std::size_t num);
         std::size_t getMapped(std::string const& name);
@@ -161,7 +170,6 @@ namespace MiniAutomata
         std::vector <State> states_;
 
         std::size_t currentState_;
-        std::size_t startState_;
 
         // Edges / Transitions
         std::unordered_multimap <std::size_t, Transition> transitions_;

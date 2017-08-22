@@ -91,6 +91,7 @@ namespace MiniAutomata
     State::State(std::string&& name)
         : id_{boost::none}
         , name_{std::move(name)}
+        , action_{}
     {
 
     }
@@ -98,6 +99,7 @@ namespace MiniAutomata
     State::State(int id, std::string&& name)
         : id_{id}
         , name_{std::move(name)}
+        , action_{}
     {
 
     }
@@ -110,6 +112,17 @@ namespace MiniAutomata
     boost::optional <int> State::getId() const
     {
         return id_;
+    }
+//---------------------------------------------------------------------------------------------------------------------
+    void State::bindAction(std::function <void()> const& action)
+    {
+        action_ = action;
+    }
+//---------------------------------------------------------------------------------------------------------------------
+    void State::operator()()
+    {
+        if (action_)
+            action_();
     }
 //#####################################################################################################################
     ProtoState operator "" _as(const char* name, std::size_t)

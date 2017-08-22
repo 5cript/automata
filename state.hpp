@@ -3,6 +3,7 @@
 #include "automata_fwd.hpp"
 #include "trigger.hpp"
 
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -111,12 +112,30 @@ namespace MiniAutomata
         State(std::string&& name);
         State(int id, std::string&& name);
 
+        /**
+         *  Get state name.
+         */
         std::string getName() const;
+
+        /**
+         *  Get state id (if assigned).
+         */
         boost::optional <int> getId() const;
+
+        /**
+         *  Adds an action to the state. The action is called when this state is entered.
+         */
+        void bindAction(std::function <void()> const& action);
+
+        /**
+         *  Calls action_, if assigned.
+         */
+        void operator()();
 
     private:
         boost::optional <int> id_;
         std::string name_;
+        std::function <void()> action_;
     };
 //#####################################################################################################################
     ProtoState operator "" _as(const char* name, std::size_t);
