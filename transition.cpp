@@ -53,22 +53,22 @@ namespace MiniAutomata
 //---------------------------------------------------------------------------------------------------------------------
     std::unordered_set <Transition*>::const_iterator TransitionSet::begin() const
     {
-        return std::cbegin(transitions_);
+        return cbegin();
     }
 //---------------------------------------------------------------------------------------------------------------------
     std::unordered_set <Transition*>::const_iterator TransitionSet::end() const
     {
-        return std::cend(transitions_);
+        return cend();
     }
 //---------------------------------------------------------------------------------------------------------------------
     std::unordered_set <Transition*>::const_iterator TransitionSet::cbegin() const
     {
-        return std::cbegin(transitions_);
+        return transitions_.cbegin();
     }
 //---------------------------------------------------------------------------------------------------------------------
     std::unordered_set <Transition*>::const_iterator TransitionSet::cend() const
     {
-        return std::cend(transitions_);
+        return transitions_.cend();
     }
 //---------------------------------------------------------------------------------------------------------------------
     Transition* TransitionSet::first()
