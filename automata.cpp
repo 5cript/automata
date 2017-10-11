@@ -81,6 +81,7 @@ namespace MiniAutomata
 //---------------------------------------------------------------------------------------------------------------------
     bool Automaton::advance()
     {
+        // advance to a random active transition.
         return advance([this](TransitionSet const& active) -> TransitionSet::const_iterator {
             std::uniform_int_distribution<std::size_t> distribution{0, active.size() - 1};
             auto iter = std::begin(active);

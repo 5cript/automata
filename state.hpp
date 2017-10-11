@@ -124,6 +124,8 @@ namespace MiniAutomata
 
         /**
          *  Adds an action to the state. The action is called when this state is entered.
+         *
+         *  @param A functor called on state activation.
          */
         void bindAction(std::function <void()> const& action);
 

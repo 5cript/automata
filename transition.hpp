@@ -8,6 +8,9 @@
 
 namespace MiniAutomata
 {
+    /**
+     *  A transition describes a one way connection between two states.
+     */
     class Transition
     {
     public:
@@ -39,6 +42,9 @@ namespace MiniAutomata
         Trigger trigger_;
     };
 
+    /**
+     *  A transition set composes a set of transitions that are active and selectable.
+     */
     class TransitionSet
     {
     public:
