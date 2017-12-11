@@ -36,3 +36,5 @@
 *build_log.html
 
 main.cpp
+build/*
+build.sh
