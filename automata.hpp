@@ -133,7 +133,7 @@ namespace MiniAutomata
         /**
          *  Returns the name of the current state
          */
-        std::string getCurrentStateName() const;
+        boost::optional <std::string> getCurrentStateName() const;
 
         /**
          *  Returns the name of the current state
@@ -153,6 +153,11 @@ namespace MiniAutomata
          *  @return Returns true, if a transition has been made.
          */
         bool advance(std::function <TransitionSet::const_iterator(TransitionSet const& set)> selector);
+		
+		/**
+		 *	Returns the amout of states.
+		 */
+		std::size_t stateCount() const;
 
     private:
         void tryEmplace(std::size_t from, std::size_t to, boost::optional <Trigger> const& trig);

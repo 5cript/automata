@@ -5,6 +5,7 @@
 
 namespace MiniAutomata
 {
+	using namespace std::string_literals;
 //#####################################################################################################################
     Automaton::Automaton()
         : nameMappings_{}
@@ -32,7 +33,7 @@ namespace MiniAutomata
         if (iter != std::end(nameMappings_))
             return iter->second;
         else
-            throw std::invalid_argument("no such state with name in automata");
+            throw std::invalid_argument(("no such state with name '"s + name + "' in automata").c_str());
     }
 //---------------------------------------------------------------------------------------------------------------------
     std::size_t Automaton::getMapped(int id)
@@ -41,7 +42,7 @@ namespace MiniAutomata
         if (iter != std::end(idMappings_))
             return iter->second;
         else
-            throw std::invalid_argument("no such state with id in automata");
+            throw std::invalid_argument(("no such state with id '"s + std::to_string(id) + "' in automata").c_str());
     }
 //---------------------------------------------------------------------------------------------------------------------
     State& Automaton::operator[](std::string const& name)
@@ -90,15 +91,24 @@ namespace MiniAutomata
         });
     }
 //---------------------------------------------------------------------------------------------------------------------
-    std::string Automaton::getCurrentStateName() const
+    boost::optional <std::string> Automaton::getCurrentStateName() const
     {
+		if (states_.empty())
+			return boost::none;
         return states_[currentState_].getName();
     }
 //---------------------------------------------------------------------------------------------------------------------
     boost::optional <int> Automaton::getCurrentStateId() const
     {
+		if (states_.empty())
+			return boost::none;
         return states_[currentState_].getId();
     }
+//---------------------------------------------------------------------------------------------------------------------
+	std::size_t Automaton::stateCount() const
+	{
+		return states_.size();
+	}
 //---------------------------------------------------------------------------------------------------------------------
     Automaton::TransitionBegin operator>(Automaton& automat, std::string const& name)
     {
